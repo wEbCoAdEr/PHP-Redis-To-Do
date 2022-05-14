@@ -82,7 +82,7 @@ class Handle extends CI_Controller
             'id' => $newDataIndex,
             'task' => $this->input->post('task'),
             'date' => $this->input->post('date'),
-            'status' => 0
+            'status' => ''
         ];
 
         //Update current to-do data with new to-do data
@@ -93,7 +93,8 @@ class Handle extends CI_Controller
             //output request response
             $this->outputData([
                 'status' => 1,
-                'message' => 'New to-do item added'
+                'message' => 'New to-do item added',
+                'id' => $newDataIndex
             ], 201);
         }
     }
@@ -108,19 +109,26 @@ class Handle extends CI_Controller
         $getPutData = (array)json_decode(file_get_contents("php://input"), true);
 
         //Get to-do index as id
-        $index = $getPutData['id'];
+        $index = (int)$getPutData['id'];
+        $getStatus = isset($getPutData['status']) ? (int)$getPutData['status'] : '';
 
         //Update to-do data to current data array
-        $currentData[$index]['task'] = $getPutData['task'];
-        $currentData[$index]['status'] = $getPutData['status'];
+        if (!empty($getPutData['task'])) {
+            $currentData[$index]['task'] = $getPutData['task'];
+        }
+
+        if (empty($getPutData['task']) && ($getStatus == 1 || $getStatus == 0)) {
+            $currentData[$index]['status'] = $getStatus;
+        }
 
         //Store updated to-do list in redis
         if ($this->cache->save('todoData', json_encode($currentData), 604800)) {
             //output request response
             $this->outputData([
                 'status' => 1,
-                'message' => 'To-do item updated'
+                'message' => 'To-do item updated',
             ]);
+
         }
 
     }
@@ -144,7 +152,6 @@ class Handle extends CI_Controller
         //Update current to-do data id to match item index
         for ($i = $index; $i < count($currentData); $i++) {
             $currentData[$i]['id'] = $i;
-            echo $i . '<br>';
         }
 
         //Store updated to-do list in redis
@@ -166,7 +173,7 @@ class Handle extends CI_Controller
         $this->outputData([
             'status' => 1,
             'message' => 'to-do list data fetch successful',
-            'data' => $this->todos
+            'data' => (array)json_decode($this->todos, true)
         ]);
     }
 

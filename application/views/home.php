@@ -1,160 +1,111 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Redis To-Do</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" /><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'>
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&amp;display=swap'>
-    <link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'>
-    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.standalone.min.css'>
-    <link rel="stylesheet" href="<?= base_url('assets/style.css'); ?>">
-
+    <title>REDIS TO-DO</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.2/font/bootstrap-icons.css">
+    <link rel="manifest" href="manifest.webmanifest" />
+    <!-- ios support -->
+    <link rel="apple-touch-icon" href="icon-192x192.png" />
+    <link rel="apple-touch-icon" href="icon-384x384.png" />
+    <link rel="apple-touch-icon" href="icon-512x512.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="#db4938" />
+    <meta name="theme-color" content="#db4938" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-<!-- partial:index.partial.html -->
-<div class="container m-5 p-2 rounded mx-auto bg-light shadow">
-    <!-- App title section -->
-    <div class="row m-1 p-4">
-        <div class="col">
-            <div class="p-1 h1 text-primary text-center mx-auto display-inline-block">
-                <i class="fa fa-check bg-primary text-white rounded p-2"></i>
-                <b>Redis To-Do</b>
-            </div>
-        </div>
-    </div>
-    <!-- Create todo section -->
-    <div class="row m-1 p-3">
-        <div class="col col-11 mx-auto">
-            <div class="row bg-white rounded shadow-sm p-2 add-todo-wrapper align-items-center justify-content-center">
-                <div class="col">
-                    <input class="form-control form-control-lg border-0 add-todo-input bg-transparent rounded" type="text" placeholder="Add new ..">
-                </div>
-                <div class="col-auto m-0 px-2 d-flex align-items-center">
-                    <label class="text-secondary my-2 p-0 px-1 view-opt-label due-date-label d-none">Due date not set</label>
-                    <i class="fa fa-calendar my-2 px-1 text-primary btn due-date-button" data-toggle="tooltip" data-placement="bottom" title="Set a Due date"></i>
-                    <i class="fa fa-calendar-times-o my-2 px-1 text-danger btn clear-due-date-button d-none" data-toggle="tooltip" data-placement="bottom" title="Clear Due date"></i>
-                </div>
-                <div class="col-auto px-0 mx-0 mr-2">
-                    <button type="button" class="btn btn-primary">Add</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="p-2 mx-4 border-black-25 border-bottom"></div>
-    <!-- View options section -->
-    <!-- To-do list section -->
-    <div class="row mx-1 px-5 pb-3 w-80">
-        <div class="col mx-auto">
-            <!-- Todo Item 1 -->
-            <div class="row px-3 align-items-center todo-item rounded">
-                <div class="col-auto m-1 p-0 d-flex align-items-center">
-                    <h2 class="m-0 p-0">
-                        <i class="fa fa-square-o text-primary btn m-0 p-0 d-none" data-toggle="tooltip" data-placement="bottom" title="Mark as complete"></i>
-                        <i class="fa fa-check-square-o text-primary btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Mark as todo"></i>
-                    </h2>
-                </div>
-                <div class="col px-1 m-1 d-flex align-items-center">
-                    <input type="text" class="form-control form-control-lg border-0 edit-todo-input bg-transparent rounded px-3" readonly value="Buy groceries for next week" title="Buy groceries for next week" />
-                    <input type="text" class="form-control form-control-lg border-0 edit-todo-input rounded px-3 d-none" value="Buy groceries for next week" />
-                </div>
-                <div class="col-auto m-1 p-0 px-3 d-none">
-                </div>
-                <div class="col-auto m-1 p-0 todo-actions">
-                    <div class="row d-flex align-items-center justify-content-end">
-                        <h5 class="m-0 p-0 px-2">
-                            <i class="fa fa-pencil text-info btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Edit todo"></i>
-                        </h5>
-                        <h5 class="m-0 p-0 px-2">
-                            <i class="fa fa-trash-o text-danger btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Delete todo"></i>
-                        </h5>
-                    </div>
-                    <div class="row todo-created-info">
-                        <div class="col-auto d-flex align-items-center pr-2">
-                            <i class="fa fa-info-circle my-2 px-2 text-black-50 btn" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Created date"></i>
-                            <label class="date-label my-2 text-black-50">28th Jun 2020</label>
+
+<!-- Start To-Do Edit Modal -->
+<div class="modal" id="todoEditModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center editForm"
+                      method="post">
+                    <div class="col-12">
+                        <div class="form-outline">
+                            <input type="text" name="task" class="form-control taskEditInput"
+                                   placeholder="Enter to-do item" required/>
                         </div>
                     </div>
-                </div>
-            </div>
-            <!-- Todo Item 2 -->
-            <div class="row px-3 align-items-center todo-item rounded">
-                <div class="col-auto m-1 p-0 d-flex align-items-center">
-                    <h2 class="m-0 p-0">
-                        <i class="fa fa-square-o text-primary btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Mark as complete"></i>
-                        <i class="fa fa-check-square-o text-primary btn m-0 p-0 d-none" data-toggle="tooltip" data-placement="bottom" title="Mark as todo"></i>
-                    </h2>
-                </div>
-                <div class="col px-1 m-1 d-flex align-items-center">
-                    <input type="text" class="form-control form-control-lg border-0 edit-todo-input bg-transparent rounded px-3" readonly value="Renew car insurance" title="Renew car insurance" />
-                    <input type="text" class="form-control form-control-lg border-0 edit-todo-input rounded px-3 d-none" value="Renew car insurance" />
-                </div>
-                <div class="col-auto m-1 p-0 px-3">
-                    <div class="row">
-                        <div class="col-auto d-flex align-items-center rounded bg-white border border-warning">
-                            <i class="fa fa-hourglass-2 my-2 px-2 text-warning btn" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Due on date"></i>
-                            <h6 class="text my-2 pr-2">28th Jun 2020</h6>
+                    <div class="col-12">
+                        <div class="form-outline">
+                            <input type="date" name="date" class="form-control dateEditInput" required/>
                         </div>
                     </div>
-                </div>
-                <div class="col-auto m-1 p-0 todo-actions">
-                    <div class="row d-flex align-items-center justify-content-end">
-                        <h5 class="m-0 p-0 px-2">
-                            <i class="fa fa-pencil text-info btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Edit todo"></i>
-                        </h5>
-                        <h5 class="m-0 p-0 px-2">
-                            <i class="fa fa-trash-o text-danger btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Delete todo"></i>
-                        </h5>
+
+                    <div class="col-12">
+                        <input type="hidden" name="id" value="" class="idEditInput">
+                        <button type="submit" class="btn btn-primary editSubmitBtn">Save</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     </div>
-                    <div class="row todo-created-info">
-                        <div class="col-auto d-flex align-items-center pr-2">
-                            <i class="fa fa-info-circle my-2 px-2 text-black-50 btn" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Created date"></i>
-                            <label class="date-label my-2 text-black-50">28th Jun 2020</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Todo Item 3 -->
-            <div class="row px-3 align-items-center todo-item editing rounded">
-                <div class="col-auto m-1 p-0 d-flex align-items-center">
-                    <h2 class="m-0 p-0">
-                        <i class="fa fa-square-o text-primary btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Mark as complete"></i>
-                        <i class="fa fa-check-square-o text-primary btn m-0 p-0 d-none" data-toggle="tooltip" data-placement="bottom" title="Mark as todo"></i>
-                    </h2>
-                </div>
-                <div class="col px-1 m-1 d-flex align-items-center">
-                    <input type="text" class="form-control form-control-lg border-0 edit-todo-input bg-transparent rounded px-3 d-none" readonly value="Sign up for online course" title="Sign up for online course" />
-                    <input type="text" class="form-control form-control-lg border-0 edit-todo-input rounded px-3" value="Sign up for online course" />
-                </div>
-                <div class="col-auto m-1 p-0 px-3 d-none">
-                </div>
-                <div class="col-auto m-1 p-0 todo-actions">
-                    <div class="row d-flex align-items-center justify-content-end">
-                        <h5 class="m-0 p-0 px-2 edit-icon">
-                            <i class="fa fa-pencil text-info btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Edit todo"></i>
-                        </h5>
-                        <h5 class="m-0 p-0 px-2">
-                            <i class="fa fa-trash-o text-danger btn m-0 p-0" data-toggle="tooltip" data-placement="bottom" title="Delete todo"></i>
-                        </h5>
-                    </div>
-                    <div class="row todo-created-info">
-                        <div class="col-auto d-flex align-items-center pr-2">
-                            <i class="fa fa-info-circle my-2 px-2 text-black-50 btn" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Created date"></i>
-                            <label class="date-label my-2 text-black-50">28th Jun 2020</label>
-                        </div>
-                    </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
 </div>
-<!-- partial -->
-<script src='https://code.jquery.com/jquery-3.3.1.slim.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js'></script>
-<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js'></script>
-<script src='https://stackpath.bootstrapcdn.com/bootlint/1.1.0/bootlint.min.js'></script>
-<script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js'></script>
-<script src="<?= base_url("assets/script.js"); ?>"></script>
+<!-- End To-Do Edit Modal -->
 
+<section class="" style="background-color: #eee; min-height: 100vh">
+    <div class="container py-5 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col col-lg-9 col-xl-7">
+                <div class="card rounded-3">
+                    <div class="card-body p-4">
+
+                        <h4 class="text-center my-3 pb-3">REDIS TO-DO</h4>
+
+                        <form class="row row-cols-lg-auto g-3 justify-content-center align-items-center mb-4 pb-2 addForm"
+                              method="post">
+                            <div class="col-12">
+                                <div class="form-outline">
+                                    <input type="text" name="task" class="form-control task"
+                                           placeholder="Enter to-do item" required/>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="form-outline">
+                                    <input type="date" name="date" class="form-control date" required/>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary addSubmitBtn">Add</button>
+                            </div>
+                        </form>
+
+                        <div class="card">
+                            <div class="card-body" style="padding: 0 0 0 0">
+                                <table class="table table-striped" style="margin-bottom: 0px">
+                                    <tbody class="taskListingParent">
+                                    </tbody>
+                                    <div class="loadingImage">
+                                        <img src="<?php echo site_url('assets/images/loading2.gif'); ?>"
+                                             class="mx-auto d-block"
+                                             style="max-width:  100px" alt="">
+                                    </div>
+                                    <div class="alert alert-warning noToDoAlert"
+                                         style="margin-bottom: 0px; display: none" role="alert">
+                                        No To-To Found! Start adding your to-do list
+                                    </div>
+
+                                </table>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    let endPoint = '<?php echo site_url('handle'); ?>';
+</script>
+<script src="assets/script.js"></script>
 </html>
