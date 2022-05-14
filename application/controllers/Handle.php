@@ -173,11 +173,16 @@ class Handle extends CI_Controller
     //Output json response
     private function outputData(array $outputData, $httpStatusCode = 200)
     {
+        //Set header content type
+        header('Content-Type: application/json');
+
         //Set http response ode
         http_response_code($httpStatusCode);
         //encode output data array to json and output json data
+
         echo json_encode($outputData);
         //exit process after the completion of response output
+
         exit();
     }
 

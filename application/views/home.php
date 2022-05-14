@@ -2,7 +2,7 @@
 <html lang="en" >
 <head>
     <meta charset="UTF-8">
-    <title>CodePen - Bootstrap - Todo Design</title>
+    <title>Redis To-Do</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" /><link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css'>
     <link rel='stylesheet' href='https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&amp;display=swap'>
@@ -19,7 +19,7 @@
         <div class="col">
             <div class="p-1 h1 text-primary text-center mx-auto display-inline-block">
                 <i class="fa fa-check bg-primary text-white rounded p-2"></i>
-                <u>My Todo-s</u>
+                <b>Redis To-Do</b>
             </div>
         </div>
     </div>
@@ -43,27 +43,7 @@
     </div>
     <div class="p-2 mx-4 border-black-25 border-bottom"></div>
     <!-- View options section -->
-    <div class="row m-1 p-3 px-5 justify-content-end">
-        <div class="col-auto d-flex align-items-center">
-            <label class="text-secondary my-2 pr-2 view-opt-label">Filter</label>
-            <select class="custom-select custom-select-sm btn my-2">
-                <option value="all" selected>All</option>
-                <option value="completed">Completed</option>
-                <option value="active">Active</option>
-                <option value="has-due-date">Has due date</option>
-            </select>
-        </div>
-        <div class="col-auto d-flex align-items-center px-1 pr-3">
-            <label class="text-secondary my-2 pr-2 view-opt-label">Sort</label>
-            <select class="custom-select custom-select-sm btn my-2">
-                <option value="added-date-asc" selected>Added date</option>
-                <option value="due-date-desc">Due date</option>
-            </select>
-            <i class="fa fa fa-sort-amount-asc text-info btn mx-0 px-0 pl-1" data-toggle="tooltip" data-placement="bottom" title="Ascending"></i>
-            <i class="fa fa fa-sort-amount-desc text-info btn mx-0 px-0 pl-1 d-none" data-toggle="tooltip" data-placement="bottom" title="Descending"></i>
-        </div>
-    </div>
-    <!-- Todo list section -->
+    <!-- To-do list section -->
     <div class="row mx-1 px-5 pb-3 w-80">
         <div class="col mx-auto">
             <!-- Todo Item 1 -->

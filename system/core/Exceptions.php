@@ -180,7 +180,11 @@ class CI_Exceptions {
 			ob_end_flush();
 		}
 		ob_start();
-		include($templates_path.$template.'.php');
+		//include($templates_path.$template.'.php');
+        echo json_encode([
+            'status' => 0,
+            'message' => $message
+        ]);
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		return $buffer;
@@ -217,7 +221,11 @@ class CI_Exceptions {
 		}
 
 		ob_start();
-		include($templates_path.'error_exception.php');
+		//include($templates_path.'error_exception.php');
+        echo json_encode([
+            'status' => 0,
+            'message' => $message
+        ]);
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		echo $buffer;
@@ -266,7 +274,11 @@ class CI_Exceptions {
 			ob_end_flush();
 		}
 		ob_start();
-		include($templates_path.$template.'.php');
+		//include($templates_path.$template.'.php');
+        echo json_encode([
+            'status' => 0,
+            'message' => $message
+        ]);
 		$buffer = ob_get_contents();
 		ob_end_clean();
 		echo $buffer;

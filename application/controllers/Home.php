@@ -22,9 +22,9 @@ class Home extends CI_Controller {
     //Index method to handle application homepage
     public function index()
 	{
-        $this->cache->delete('todoData');
+        var_dump($this->cache->cache_info());
         //Loads application homepage view
-        //$this->load->view('home');
+        $this->load->view('home');
 	}
 
 }
