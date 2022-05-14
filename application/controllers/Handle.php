@@ -109,12 +109,16 @@ class Handle extends CI_Controller
         $getPutData = (array)json_decode(file_get_contents("php://input"), true);
 
         //Get to-do index as id
-        $index = (int)$getPutData['id'];
+        $index = isset($getPutData['id']) ? (int)$getPutData['id'] : '';
         $getStatus = isset($getPutData['status']) ? (int)$getPutData['status'] : '';
 
         //Update to-do data to current data array
         if (!empty($getPutData['task'])) {
             $currentData[$index]['task'] = $getPutData['task'];
+        }
+
+        if (!empty($getPutData['date'])) {
+            $currentData[$index]['date'] = $getPutData['date'];
         }
 
         if (empty($getPutData['task']) && ($getStatus == 1 || $getStatus == 0)) {
